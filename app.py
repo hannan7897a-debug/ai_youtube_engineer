@@ -102,3 +102,4 @@ elif st.session_state.page == 'seo':
     if st.button("Analyze"):
         st.area_chart([20, 50, 40, 100, 80])
     st.button("⬅️ Back", on_click=lambda: navigate('dashboard'))
+
