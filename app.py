@@ -8,7 +8,7 @@ st.set_page_config(page_title="NexTube AI | Cyber Studio", layout="wide", initia
 
 # --- 2. 🔑 API KEY SECTION ---
 # Yahan apni YouTube API Key paste karein
-FIXED_API_KEY = "PASTE_YOUR_API_KEY_HERE" 
+FIXED_API_KEY = "AIzaSyC6VmRzwj1BGBcZwSkAIJT6QiuDlq2o_xc" 
 
 # --- 3. 🎨 ULTRA-PREMIUM CSS (DESIGN) ---
 st.markdown("""
@@ -175,3 +175,4 @@ elif st.session_state.page == 'seo':
             st.error("API Key check karein!")
 
     st.button("⬅️ Back", on_click=lambda: navigate('dashboard'))
+
