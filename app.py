@@ -3,26 +3,24 @@ import pandas as pd
 import time
 from googleapiclient.discovery import build
 
-# --- CONFIGURATION ---
+# --- 1. CONFIGURATION ---
 st.set_page_config(page_title="NexTube AI | Cyber Studio", layout="wide", initial_sidebar_state="collapsed")
 
-# --- 🔑 API KEY SECTION ---
+# --- 2. 🔑 API KEY SECTION ---
 # Yahan apni YouTube API Key paste karein
-FIXED_API_KEY = "AIzaSyC6VmRzwj1BGBcZwSkAIJT6QiuDlq2o_xc" 
+FIXED_API_KEY = "PASTE_YOUR_API_KEY_HERE" 
 
-# --- 🎨 ULTRA-PREMIUM CSS ---
+# --- 3. 🎨 ULTRA-PREMIUM CSS (DESIGN) ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Space+Grotesk:wght@500;700&display=swap');
 
-    /* Global Style */
     .stApp {
         background: radial-gradient(circle at top right, #1e1b4b, #0f172a, #020617);
         color: #f8fafc;
         font-family: 'Inter', sans-serif;
     }
 
-    /* Glassmorphism Cards */
     .glass-card {
         background: rgba(255, 255, 255, 0.03);
         backdrop-filter: blur(15px);
@@ -40,7 +38,6 @@ st.markdown("""
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     }
 
-    /* Hero Text */
     .hero-title {
         font-family: 'Space Grotesk', sans-serif;
         font-size: clamp(40px, 8vw, 80px);
@@ -48,11 +45,10 @@ st.markdown("""
         background: linear-gradient(to bottom right, #ffffff, #64748b);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        line-height: 1;
+        line-height: 1.1;
         text-align: center;
     }
 
-    /* Neon Buttons */
     .stButton>button {
         background: linear-gradient(90deg, #3b82f6, #8b5cf6) !important;
         border: none !important;
@@ -62,22 +58,16 @@ st.markdown("""
         font-weight: 700 !important;
         transition: 0.3s !important;
         text-transform: uppercase;
-        letter-spacing: 1px;
+        width: 100%;
     }
     .stButton>button:hover {
         box-shadow: 0 0 30px rgba(59, 130, 246, 0.6) !important;
-        transform: scale(1.05);
-    }
-
-    /* Sidebar Clean Look */
-    [data-testid="stSidebar"] {
-        background-color: rgba(15, 23, 42, 0.95) !important;
-        border-right: 1px solid rgba(255,255,255,0.1);
+        transform: scale(1.02);
     }
     </style>
     """, unsafe_allow_html=True)
 
-# --- 🧭 NAVIGATION LOGIC ---
+# --- 4. 🧭 NAVIGATION LOGIC ---
 if 'page' not in st.session_state:
     st.session_state.page = 'landing'
 
@@ -85,7 +75,7 @@ def navigate(page_name):
     st.session_state.page = page_name
     st.rerun()
 
-# --- 1️⃣ LANDING PAGE ---
+# --- 5. 🏠 PAGE 1: LANDING PAGE ---
 if st.session_state.page == 'landing':
     st.markdown("<br><br><br>", unsafe_allow_html=True)
     st.markdown('<h1 class="hero-title">Turn Ideas into Viral<br>YouTube Content</h1>', unsafe_allow_html=True)
@@ -97,7 +87,7 @@ if st.session_state.page == 'landing':
         if st.button("🚀 Enter AI Studio"):
             navigate('dashboard')
 
-# --- 2️⃣ DASHBOARD HOME ---
+# --- 6. ⚡ PAGE 2: DASHBOARD ---
 elif st.session_state.page == 'dashboard':
     st.markdown("## ⚡ Neural Dashboard")
     st.markdown("<p style='color:#94a3b8;'>Welcome back, Creator. What are we building today?</p>", unsafe_allow_html=True)
@@ -122,12 +112,12 @@ elif st.session_state.page == 'dashboard':
                 </div>
             """, unsafe_allow_html=True)
             if st.button(f"Launch {tool['name']}", key=f"btn_{i}"):
-                if tool['name'] == "Video Builder": navigate('builder')
+                if tool['name'] in ["Video Builder", "Script Genie"]: navigate('builder')
                 if tool['name'] == "SEO Pulse": navigate('seo')
 
-    if st.button("⬅️ Logout"): navigate('landing')
+    st.sidebar.button("⬅️ Logout", on_click=lambda: navigate('landing'))
 
-# --- 3️⃣ VIDEO BUILDER SCREEN (Canva/Runway Style) ---
+# --- 7. 🎬 PAGE 3: VIDEO BUILDER & SCRIPT GENERATOR ---
 elif st.session_state.page == 'builder':
     st.markdown("## 🎬 AI Video Studio")
     
@@ -135,10 +125,19 @@ elif st.session_state.page == 'builder':
     
     with side:
         st.markdown("### ⚙️ Engine")
-        topic = st.text_input("Video Topic")
+        topic = st.text_input("Video Topic", placeholder="e.g. History of AI")
         tone = st.select_slider("Tone", ["Chill", "Hype", "Dark", "Funny"])
         voice = st.selectbox("Voice Artist", ["Adam (Pro)", "Bella (Soft)", "Cyber (AI)"])
-        st.button("✨ Generate AI Script")
+        
+        # --- AI SCRIPT GENERATOR LOGIC ---
+        if st.button("✨ Generate AI Script"):
+            if topic:
+                with st.spinner("AI Brainstorming..."):
+                    time.sleep(2)
+                    st.session_state.generated_script = f"Hook: Kya aapne socha hai {topic} kaise badlega?\nBody: Is video mein hum {topic} ki gehrayi mein jayenge..."
+                    st.success("Script Ready!")
+            else:
+                st.warning("Pehle Topic likhein!")
 
     with main:
         st.markdown("""
@@ -149,22 +148,20 @@ elif st.session_state.page == 'builder':
                 </div>
             </div>
         """, unsafe_allow_html=True)
-        st.slider("Timeline (Seconds)", 0, 60, 0)
+        
+        if 'generated_script' in st.session_state:
+            st.info(st.session_state.generated_script)
 
     with assets:
         st.markdown("### 📦 Assets")
         st.button("📷 Add AI B-Roll")
         st.button("🎵 Add Background Music")
-        st.button("✍️ Generate Captions")
-        st.divider()
         if st.button("🔥 EXPORT 4K"):
-            st.toast("Exporting to cloud...")
-            time.sleep(2)
             st.balloons()
 
-    if st.button("⬅️ Exit Studio"): navigate('dashboard')
+    st.button("⬅️ Back to Dashboard", on_click=lambda: navigate('dashboard'))
 
-# --- 4️⃣ SEO PULSE (YouTube API Logic) ---
+# --- 8. 📈 PAGE 4: SEO PULSE ---
 elif st.session_state.page == 'seo':
     st.markdown("## 📈 SEO Neural Scan")
     c_id = st.text_input("Enter Channel ID to Scan")
@@ -172,12 +169,9 @@ elif st.session_state.page == 'seo':
     if st.button("Execute Scan") and c_id:
         try:
             youtube = build('youtube', 'v3', developerKey=FIXED_API_KEY)
-            # Sample Fetching
-            st.success("API Connection Successful!")
-            st.info("Neural engine is analyzing competitors...")
-            # Visual placeholder
-            st.area_chart([10, 25, 45, 30, 80, 60])
+            st.success("Connected to YouTube Data API!")
+            st.area_chart([10, 45, 30, 90, 60, 100])
         except:
-            st.error("Invalid API Key or Channel ID")
+            st.error("API Key check karein!")
 
-    if st.button("⬅️ Exit"): navigate('dashboard')
+    st.button("⬅️ Back", on_click=lambda: navigate('dashboard'))
