@@ -48,25 +48,3 @@ if st.button("Fetch & Analyze Live Insights") and api_key and c_id:
     if df is not None:
         st.success("✅ Analysis Complete! AI Engine is live.")
         
-        col1, col2 = st.columns([1, 1])
-        
-        with col1:
-            st.subheader("📊 Performance Chart")
-            # Creating a visual bar chart
-            fig = px.bar(df, x="Views", y="Title", orientation='h', color="Views", 
-                         title="Views per Video", template="plotly_white")
-            st.plotly_chart(fig, use_container_width=True)
-        
-        with col2:
-            st.subheader("🧠 AI Strategic Advice")
-            top_v = df.iloc[0]['Title']
-            st.info(f"**Top Insight:** Video '{top_v}' is your best asset.")
-            st.divider()
-            st.warning("⚠️ **Strategy:** Your view-to-like ratio suggests you should add a 'Call to Action' in the middle of your videos.")
-
-        st.subheader("📋 Detailed Metrics")
-        st.dataframe(df, use_container_width=True)
-
-        # Requirement: Architecture Diagram description
-        st.divider()
-        st.write("🏗️ **Architecture:** API Input -> Data Processing -> Reasoning Engine -> Strategic Output")
