@@ -104,3 +104,4 @@ elif st.session_state.page == 'seo':
     st.button("⬅️ Back", on_click=lambda: navigate('dashboard'))
 
 
+
