@@ -9,7 +9,7 @@ st.set_page_config(page_title="NexTube AI | Cyber Studio", layout="wide", initia
 
 # --- 2. 🔑 API KEYS (Dono Yahan Paste Karein) ---
 YOUTUBE_API_KEY = "AIzaSyC6VmRzwj1BGBcZwSkAIJT6QiuDlq2o_xc" 
-GEMINI_API_KEY = "AIzaSyCqJTZzkFhI1-GiGogb6a1h-a7NOzv9i2A"
+GEMINI_API_KEY = "AIzaSyDsGED2WRkNT6QrhC1GSfVnDX9IAyIe24s"
 
 # Gemini AI Setup
 genai.configure(api_key=GEMINI_API_KEY)
@@ -102,6 +102,7 @@ elif st.session_state.page == 'seo':
     if st.button("Analyze"):
         st.area_chart([20, 50, 40, 100, 80])
     st.button("⬅️ Back", on_click=lambda: navigate('dashboard'))
+
 
 
 
